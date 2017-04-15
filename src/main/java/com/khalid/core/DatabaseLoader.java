@@ -1,4 +1,4 @@
-package com.khalid.com.khalid.core;
+package com.khalid.core;
 
 import com.khalid.topic.Topic;
 import com.khalid.topic.TopicRepository;

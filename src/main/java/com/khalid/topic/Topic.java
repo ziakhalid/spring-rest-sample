@@ -1,6 +1,6 @@
 package com.khalid.topic;
 
-import com.khalid.com.khalid.core.BaseEntity;
+import com.khalid.core.BaseEntity;
 
 import javax.persistence.Entity;
 
