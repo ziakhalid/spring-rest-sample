@@ -7,25 +7,25 @@ import javax.persistence.Entity;
 @Entity
 public class Topic extends BaseEntity {
 
-    private String name;
+    private String topicName;
     private int questionCount;
 
     protected Topic() {
         super();
     }
 
-    public Topic(String name, int questionCount) {
+    public Topic(String topicName, int questionCount) {
         this();
-        this.name = name;
+        this.topicName = topicName;
         this.questionCount = questionCount;
     }
 
-    public String getName() {
-        return name;
+    public String getTopicName() {
+        return topicName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTopicName(String topicName) {
+        this.topicName = topicName;
     }
 
     public int getQuestionCount() {
