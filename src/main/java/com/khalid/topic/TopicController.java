@@ -1,11 +1,11 @@
 package com.khalid.topic;
 
 import com.google.common.collect.Lists;
+import com.khalid.core.Util;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 
@@ -24,6 +24,14 @@ public class TopicController {
     @RequestMapping(method = RequestMethod.GET, value = "topicName/{topicName}")
     public Collection<Topic> getTopicByTopicName(@PathVariable String topicName){
         return topicRepository.findByTopicName(topicName);
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity<?> addTopic(@RequestBody Topic topic) {
+        if (topicRepository.save(new Topic(topic.getTopicName(), topic.getQuestionCount())) != null) {
+            return Util.createResponseEntity("Successful creation of a resource", HttpStatus.CREATED);
+        }
+        return Util.createResponseEntity("Error creating resource", HttpStatus.BAD_REQUEST);
     }
 
 
