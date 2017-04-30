@@ -14,7 +14,7 @@ import java.util.Collection;
 public class TopicController {
 
     @Autowired
-    TopicRepository topicRepository;
+    private TopicRepository topicRepository;
 
     @RequestMapping(method = RequestMethod.GET)
     Collection<Topic> getAllTopics() {
@@ -50,6 +50,16 @@ public class TopicController {
             }
         }
         return Util.createResponseEntity("Error updating data", HttpStatus.NOT_FOUND);
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE, value = "topicId/{topicId}")
+    ResponseEntity<?> deleteTopic(@PathVariable long topicId) {
+        try {
+            topicRepository.delete(topicId);
+            return Util.createResponseEntity("Data deleted successfully", HttpStatus.ACCEPTED);
+        } catch (Exception e) {
+            return Util.createResponseEntity("Resource not found", HttpStatus.NOT_FOUND);
+        }
     }
 
 }
