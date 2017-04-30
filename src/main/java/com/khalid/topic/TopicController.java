@@ -10,42 +10,42 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collection;
 
 @RestController
-@RequestMapping ("/topics")
+@RequestMapping("/topics")
 public class TopicController {
 
     @Autowired
     TopicRepository topicRepository;
 
-    @RequestMapping (method = RequestMethod.GET)
-    Collection<Topic> getAllTopics(){
+    @RequestMapping(method = RequestMethod.GET)
+    Collection<Topic> getAllTopics() {
         return Lists.newArrayList(topicRepository.findAll());
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "topicName/{topicName}")
-    public Collection<Topic> getTopicByTopicName(@PathVariable String topicName){
+    Collection<Topic> getTopicByTopicName(@PathVariable String topicName) {
         return topicRepository.findByTopicName(topicName);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "topicId/{topicId}")
-    public Topic getTopicById(@PathVariable Long topicId) {
-        return topicRepository.findOne(topicId);
+    Topic getTopicById(@PathVariable Long topicId) {
+        return Util.findOneById(topicRepository, topicId);
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<?> addTopic(@RequestBody Topic topic) {
-        if (topicRepository.save(new Topic(topic.getTopicName(), topic.getQuestionCount())) != null) {
+    ResponseEntity<?> addTopic(@RequestBody Topic topic) {
+        if (Util.save(topicRepository, new Topic(topic.getTopicName(), topic.getQuestionCount())) != null) {
             return Util.createResponseEntity("Successful creation of a resource", HttpStatus.CREATED);
         }
         return Util.createResponseEntity("Error creating resource", HttpStatus.BAD_REQUEST);
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "topicId/{topicId}")
-    public ResponseEntity<?> updateTopic(@RequestBody Topic topic, @PathVariable long topicId) {
-        Topic newTopic = topicRepository.findOne(topicId);
+    ResponseEntity<?> updateTopic(@RequestBody Topic topic, @PathVariable long topicId) {
+        Topic newTopic = Util.findOneById(topicRepository, topicId);
         if (newTopic != null) {
             newTopic.setTopicName(topic.getTopicName());
             newTopic.setQuestionCount(topic.getQuestionCount());
-            if (topicRepository.save(newTopic).getId().equals(topicId)) {
+            if (Util.save(topicRepository, newTopic).getId().equals(topicId)) {
                 return Util.createResponseEntity("Data updated successfully", HttpStatus.OK);
             }
         }
